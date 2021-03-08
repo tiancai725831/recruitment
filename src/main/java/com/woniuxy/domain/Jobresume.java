@@ -38,5 +38,7 @@ public class Jobresume implements Serializable {
     @TableField("isAgree")
     private Integer isAgree;
 
+    private Integer seekerId;
+
 
 }

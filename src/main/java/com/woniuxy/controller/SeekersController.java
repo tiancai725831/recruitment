@@ -4,10 +4,14 @@ package com.woniuxy.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.woniuxy.Vo.SeekerInfoVo;
+import com.woniuxy.domain.Onlineresume;
+import com.woniuxy.domain.Projectexperience;
 import com.woniuxy.domain.Seekers;
 import com.woniuxy.domain.Users;
 import com.woniuxy.dto.Result;
 import com.woniuxy.dto.StatusCode;
+import com.woniuxy.service.OnlineresumeService;
+import com.woniuxy.service.ProjectexperienceService;
 import com.woniuxy.service.SeekersService;
 import com.woniuxy.service.UsersService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +36,13 @@ public class SeekersController {
     private UsersService usersService;
     @Resource
     private SeekersService seekersService;
+    @Resource
+    private OnlineresumeService onlineresumeService;
+    @Resource
+    private ProjectexperienceService projectexperienceService;
+
+
+
     //查询求职者信息
     @GetMapping("getInfo")
     public Result getInfo(Seekers seekers){
@@ -70,6 +81,16 @@ public class SeekersController {
             return new Result(true, StatusCode.OK,"修改信息成功");
         }
         return new Result(false,StatusCode.ERROR,"修改信息失败");
+    }
+
+
+    //创建在线简历
+    @GetMapping("createResumes")
+    public Result createResumes(Onlineresume onlineresume, Projectexperience projectexperience){
+        onlineresumeService.save(onlineresume);
+        projectexperienceService.save(projectexperience);
+
+        return new Result(true,StatusCode.OK,"创建简历成功");
     }
 }
 
