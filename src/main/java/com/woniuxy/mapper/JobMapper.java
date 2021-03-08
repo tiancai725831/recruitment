@@ -2,6 +2,11 @@ package com.woniuxy.mapper;
 
 import com.woniuxy.domain.Job;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +17,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2021-03-06
  */
 public interface JobMapper extends BaseMapper<Job> {
+
+    @Select("select j.* from job j join recruiter r on j.recruiterId = #{id} ")
+    public List<Job> getJobs(Integer id);
+
+    @Insert("insert into job values(#{id},#{recruiterId},#{companyId},#{minSalary}," +
+            "#{maxSalary},#{welfare},#{workPlace},#{academicRequirements},#{experienceRequirement}," +
+            "#{recruitmentStatus},#{jobName},#{jobReleaseTime},#{updatedTime},#{jobTag},#{viewNumber})")
+    public Integer addByRid(@RequestParam Job job);
+
 
 }

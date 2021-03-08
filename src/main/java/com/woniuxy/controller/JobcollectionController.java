@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * <p>
  *  前端控制器
- *  公司
  * </p>
  *
  * @author zhangshuai
- * @since 2021-03-06
+ * @since 2021-03-08
  */
 @RestController
-@RequestMapping("/company")
-public class CompanyController {
+@RequestMapping("/jobcollection")
+public class JobcollectionController {
 
 }
 

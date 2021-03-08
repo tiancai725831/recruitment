@@ -1,6 +1,7 @@
 package com.woniuxy.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhangshuai
- * @since 2021-03-06
+ * @since 2021-03-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -41,7 +42,7 @@ public class Interview implements Serializable {
     @TableField("jobId")
     private Integer jobId;
 
-    private String time;
+    private Long time;
 
     private String place;
 
@@ -50,6 +51,12 @@ public class Interview implements Serializable {
 
     @TableField("seekerComment")
     private String seekerComment;
+
+    private Integer result;
+
+    private Date createtime;
+
+    private Date updatetime;
 
 
 }

@@ -3,6 +3,7 @@ package com.woniuxy.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhangshuai
- * @since 2021-03-06
+ * @since 2021-03-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -46,6 +47,9 @@ public class Users implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+
+    @TableField("isComplainted")
+    private Integer isComplainted;
 
 
 }
