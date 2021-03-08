@@ -1,6 +1,7 @@
 package com.woniuxy.config;
 
 
+import com.woniuxy.jwt.MyJwtFilter;
 import com.woniuxy.realm.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
@@ -24,6 +25,7 @@ public class ShiroConfig {
         customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return customRealm;
     }
+
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
@@ -34,13 +36,15 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("jwt",new MyJwtFilter());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("/users/login","anon");
         //用户注册方法放行
         map.put("/users/register","anon");
         //发送验证码方法放行
         map.put("/users/sendVerificationCode","anon");
-        map.put("/**","user");
+        map.put("/**","anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }
