@@ -1,6 +1,8 @@
 package com.woniuxy.config;
 
 
+import com.woniuxy.component.JWTRealm;
+import com.woniuxy.component.JwtFilter;
 import com.woniuxy.realm.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
@@ -17,12 +19,9 @@ import java.util.Map;
 public class ShiroConfig {
     @Bean
     public Realm realm(){
-        CustomRealm customRealm = new CustomRealm();
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        hashedCredentialsMatcher.setHashIterations(1024);
-        customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
-        return customRealm;
+        JWTRealm jwtRealm = new JWTRealm();
+
+        return jwtRealm;
     }
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
@@ -34,9 +33,11 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
+        Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
+        filters.put("jwt",new JwtFilter());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("/user/login","anon");
-        map.put("/**","user");
+        map.put("/**","jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }
