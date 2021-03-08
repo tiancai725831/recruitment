@@ -10,10 +10,7 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
-/**
- * 代码自动生成器
- */
-public class MybatisPlusAutoCode {
+public class AutoCodeUtil {
     public static void main(String[] args) {
         //构建代码自动生成器对象
         AutoGenerator autoGenerator = new AutoGenerator();
@@ -24,8 +21,8 @@ public class MybatisPlusAutoCode {
         GlobalConfig gc = new GlobalConfig();
 
         String projectPath = System.getProperty("user.dir");   //获取当前项目所在目录
-        gc.setOutputDir(projectPath+"/src/main/java");         //自定义代码生成后的存放目录
-        gc.setAuthor("zhangshuai");                            //设置项目作者
+        gc.setOutputDir(projectPath + "/src/main/java");         //自定义代码生成后的存放目录
+        gc.setAuthor("fx");                            //设置项目作者
         gc.setOpen(false);                                     //代码生成后是否打开文件夹
         gc.setFileOverride(false);                             //是否覆盖
         gc.setServiceName("%sService");                        //去Service的I前缀
@@ -37,10 +34,10 @@ public class MybatisPlusAutoCode {
         //2、设置数据源:
         // https://baomidou.com/config/generator-config.html#%E6%95%B0%E6%8D%AE%E6%BA%90-datasourceconfig-%E9%85%8D%E7%BD%AE
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql:///woniudb?characterEncoding=utf-8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/third?characterEncoding=utf-8");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("");
         dsc.setDbType(DbType.MYSQL);                          //指定数据库类型
 
         autoGenerator.setDataSource(dsc);                     //添加数据源配置
@@ -60,7 +57,7 @@ public class MybatisPlusAutoCode {
         StrategyConfig strategy = new StrategyConfig();
         // 设置要生成的实体类对应映射的表名
         strategy.setInclude("company","interview","job","onlineresume","projectexperience","recruiter","seekers","users");
-//   strategy.setTablePrefix("t_");                       //去除表名前缀
+        //      strategy.setTablePrefix("t_");                       //去除表名前缀
         //设置表名生成策略，下划线转驼峰
         strategy.setNaming(NamingStrategy.underline_to_camel);
         //设置列名生成策略，下划线转驼峰
@@ -69,12 +66,12 @@ public class MybatisPlusAutoCode {
 //        strategy.setLogicDeleteFieldName("deleted");         //设置使用逻辑删除策略的属性名
         // 自动填充配置 TableFill
 //        TableFill gmtCreate = new TableFill("gmt_create", FieldFill.INSERT);
-//        TableFill gmtModified = new TableFill("gmt_modified", FieldFill.INSERT_UPDATE);
+//        TableFill gmtModified = new TableFill("last_update", FieldFill.INSERT_UPDATE);
 //        ArrayList<TableFill> tableFills = new ArrayList<>();
 //        tableFills.add(gmtCreate);
 //        tableFills.add(gmtModified);
 //        strategy.setTableFillList(tableFills);
-
+//
 //        strategy.setVersionFieldName("version");             // 乐观锁
         strategy.setRestControllerStyle(true);               //生成 @RestController 控制器
         strategy.setControllerMappingHyphenStyle(true);      //驼峰转连字符--->localhost:8080/hello_id_2

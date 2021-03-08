@@ -35,7 +35,11 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("/user/login","anon");
+        map.put("/users/login","anon");
+        //用户注册方法放行
+        map.put("/users/register","anon");
+        //发送验证码方法放行
+        map.put("/users/sendVerificationCode","anon");
         map.put("/**","user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
