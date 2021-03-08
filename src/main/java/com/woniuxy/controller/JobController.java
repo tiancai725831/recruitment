@@ -59,16 +59,17 @@ public class JobController {
         return new Result(true,StatusCode.OK,"新增成功");
     }
 
-    @GetMapping("updateToJobs")
-    public Result updateToJobs(Job job){
+    @GetMapping("updateToJobs/{id}")
+    public Result updateToJobs(Integer id){
         System.out.println("更新跳转");
-        Job jobs = jobService.getById(job.getId());
+        Job jobs = jobService.getByRid(id);
         return new Result(true,StatusCode.OK,"更新跳转成功",jobs);
     }
 
     @PutMapping("updateJobs")
     public Result updateJobs(@RequestBody Job job){
         System.out.println("更新岗位");
+
         return new Result();
     }
 }

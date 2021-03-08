@@ -35,5 +35,11 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
         return true;
     }
 
+    @Override
+    public Job getByRid(Integer id) {
+
+        return null;
+    }
+
 
 }

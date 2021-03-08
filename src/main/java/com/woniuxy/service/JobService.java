@@ -19,4 +19,5 @@ public interface JobService extends IService<Job> {
 
     public boolean addByRid(Job job);
 
+    Job getByRid(Integer id);
 }
