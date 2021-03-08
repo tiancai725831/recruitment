@@ -41,7 +41,7 @@ public class Interview implements Serializable {
     @TableField("jobId")
     private Integer jobId;
 
-    private String time;
+    private Long time;
 
     private String place;
 
