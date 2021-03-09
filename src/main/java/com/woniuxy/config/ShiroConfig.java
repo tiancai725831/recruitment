@@ -36,6 +36,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("/user/login","anon");
+        map.put("/interview/**","anon");
         map.put("/**","user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;

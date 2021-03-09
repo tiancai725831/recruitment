@@ -1,7 +1,10 @@
 package com.woniuxy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.woniuxy.domain.Interview;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface InterviewService extends IService<Interview> {
 
+    List<Interview> getPage(QueryWrapper<Interview> wrapperI);
 }
