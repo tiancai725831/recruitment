@@ -33,21 +33,31 @@ public class JobController {
     @Resource
     private RecruiterService recruiterService;
 
+    private Integer jid;
+
     //查看发布岗位
-    @GetMapping("getJobs")
-    public Result getJobs(Recruiter recruiter){
+    @GetMapping("getJobs/{id}")
+    public Result getJobs(@PathVariable Integer id){
         System.out.println("查看发布岗位");
-        List<Job> jobs = jobService.getJobs(recruiter.getId());
+        List<Job> jobs = jobService.getJobs(id);
 
         return new Result(true, StatusCode.OK,"查询成功",jobs);
     }
 
+    //查看岗位详情
+    @GetMapping("viewJob")
+    public Result viewJob(@PathVariable Integer id){
+        System.out.println("查看岗位详情");
+        Job job = jobService.getById(id);
+        return new Result(true,StatusCode.OK,"岗位详情",job);
+    }
+
     //跳转发布岗位
     @GetMapping("addToJobs/{id}")
-    public Result addToJobs(Integer id){
+    public Result addToJobs(@PathVariable Integer id){
         System.out.println("增加跳转成功");
-        Recruiter recruiter = recruiterService.getById(id);
-        return new Result(true,StatusCode.OK,"增加跳转成功",recruiter);
+        Job job = jobService.getById(id);
+        return new Result(true,StatusCode.OK,"增加跳转成功",job);
     }
 
     //发布岗位
@@ -59,18 +69,30 @@ public class JobController {
         return new Result(true,StatusCode.OK,"新增成功");
     }
 
+    //更新岗位跳转
     @GetMapping("updateToJobs/{id}")
-    public Result updateToJobs(Integer id){
+    public Result updateToJobs(@PathVariable Integer id){
         System.out.println("更新跳转");
-        Job jobs = jobService.getByRid(id);
-        return new Result(true,StatusCode.OK,"更新跳转成功",jobs);
+        Job job = jobService.getByRid(id);
+        return new Result(true,StatusCode.OK,"更新跳转成功",job);
     }
 
-    @PutMapping("updateJobs")
-    public Result updateJobs(@RequestBody Job job){
+    //更新岗位
+    @PutMapping("updateJob")
+    public Result updateJob(@RequestBody Job job){
         System.out.println("更新岗位");
+        QueryWrapper<Job> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",job.getId());
+        jobService.update(job, wrapper);
+        return new Result(true,StatusCode.OK,"更新成功");
+    }
 
-        return new Result();
+    @DeleteMapping("deleteJob/{id}")
+    public Result deleteJob(@PathVariable Integer id){
+        QueryWrapper<Job> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id);
+        jobService.remove(wrapper);
+        return new Result(true,StatusCode.OK,"删除岗位");
     }
 }
 

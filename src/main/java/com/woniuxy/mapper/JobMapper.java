@@ -26,5 +26,11 @@ public interface JobMapper extends BaseMapper<Job> {
             "#{recruitmentStatus},#{jobName},#{jobReleaseTime},#{updatedTime},#{jobTag},#{viewNumber})")
     public Integer addByRid(@RequestParam Job job);
 
+    @Select("select j.* from job j join recruiter r on j.recruiterId = #{id} ")
+    Job getByRid(Integer id);
 
+    @Select("DELETE \n" +
+            "from job \n" +
+            "where id=#{jid}")
+    public Integer deleteByJid(Integer jid);
 }

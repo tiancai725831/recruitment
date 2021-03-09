@@ -25,8 +25,8 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
 
     @Override
     public List<Job> getJobs(Integer id) {
-        jobMapper.getJobs(id);
-        return null;
+        List<Job> jobs = jobMapper.getJobs(id);
+        return jobs;
     }
 
     @Override
@@ -37,8 +37,14 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
 
     @Override
     public Job getByRid(Integer id) {
+        Job job = jobMapper.getByRid(id);
+        return job;
+    }
 
-        return null;
+    @Override
+    public boolean deleteByJid(Integer jid) {
+        jobMapper.deleteByJid(jid);
+        return true;
     }
 
 
