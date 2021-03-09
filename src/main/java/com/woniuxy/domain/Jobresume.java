@@ -32,8 +32,8 @@ public class Jobresume implements Serializable {
     @TableField("recruiterId")
     private Integer recruiterId;
 
-    @TableField("jonId")
-    private Integer jonId;
+    @TableField("jobId")
+    private Integer jobId;
 
     @TableField("isAgree")
     private Integer isAgree;
