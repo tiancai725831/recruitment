@@ -52,11 +52,9 @@ public class Interview implements Serializable {
     @TableField("seekerComment")
     private String seekerComment;
 
-    private Integer result;
+    private String result;
 
     private Date createtime;
 
     private Date updatetime;
-
-
 }

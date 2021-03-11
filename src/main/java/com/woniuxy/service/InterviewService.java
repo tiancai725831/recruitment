@@ -17,4 +17,5 @@ import java.util.List;
 public interface InterviewService extends IService<Interview> {
 
     List<Interview> getPage(QueryWrapper<Interview> wrapperI);
+
 }

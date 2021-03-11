@@ -1,7 +1,12 @@
 package com.woniuxy.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.woniuxy.Vo.JobMeetingVO;
+import com.woniuxy.Vo.JobresumeVO;
 import com.woniuxy.domain.Seekers;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SeekersService extends IService<Seekers> {
 
+    List<JobMeetingVO> getJobPage(QueryWrapper<JobMeetingVO> wrapper);
 }
