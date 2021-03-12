@@ -22,8 +22,8 @@ import java.util.List;
  *  Mapper 接口
  * </p>
  *
- * @author zhangshuai
- * @since 2021-03-06
+ * @author fx
+ * @since 2021-03-08
  */
 public interface JobMapper extends BaseMapper<Job> {
     //根据输入的职位名称查询拥有该职位的公司名

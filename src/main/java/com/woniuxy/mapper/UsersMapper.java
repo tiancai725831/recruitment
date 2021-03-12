@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import com.woniuxy.vo.RecruitersVo;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -34,4 +36,11 @@ public interface UsersMapper extends BaseMapper<Users> {
     List<Users> getCloudList(@Param("list") List<Integer> list);
 
     Users selectUserByName(@Param("uname") String uname);
+    //修改密码方法
+    @Update("UPDATE " +
+            "users " +
+            "SET `password`=#{password} " +
+            "WHERE " +
+            "id=#{id} ")
+    Integer updatePasswordByUserId(RecruitersVo recruitersVo);
 }

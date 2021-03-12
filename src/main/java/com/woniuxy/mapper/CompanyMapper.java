@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -19,5 +20,6 @@ public interface CompanyMapper extends BaseMapper<Company> {
     //查询出所有公司的所有职位
     @Select("select j.jobName,c.companyName FROM job as j JOIN company as c on c.id=j.companyId")
     List<JobNameCompanyName> findAllCompaniesAndJobs();
+
 
 }

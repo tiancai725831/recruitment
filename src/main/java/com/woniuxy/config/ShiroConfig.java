@@ -1,10 +1,12 @@
 package com.woniuxy.config;
 
 
+import com.woniuxy.jwt.MyJwtFilter;
 //import com.woniuxy.component.JWTRealm;
 import com.woniuxy.component.JwtFilter;
 import com.woniuxy.realm.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -26,6 +28,7 @@ public class ShiroConfig {
         customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
         return customRealm;
     }
+
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
@@ -37,9 +40,8 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
-        filters.put("jwt",new JwtFilter());
+        filters.put("jwt",new MyJwtFilter());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-       map.put("/**","anon");
         map.put("/**","anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;

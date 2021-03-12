@@ -12,8 +12,8 @@ import org.apache.ibatis.annotations.Select;
  *  Mapper 接口
  * </p>
  *
- * @author zhangshuai
- * @since 2021-03-06
+ * @author fx
+ * @since 2021-03-08
  */
 public interface InterviewMapper extends BaseMapper<Interview> {
     //根据seekes的id查询出求职者的姓名以及求职者约定的面试时间

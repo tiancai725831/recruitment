@@ -19,8 +19,8 @@ import java.util.List;
  *  服务实现类
  * </p>
  *
- * @author zhangshuai
- * @since 2021-03-06
+ * @author fx
+ * @since 2021-03-08
  */
 @Service
 public class RecruiterServiceImpl extends ServiceImpl<RecruiterMapper, Recruiter> implements RecruiterService {

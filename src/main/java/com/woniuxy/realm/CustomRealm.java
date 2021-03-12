@@ -2,8 +2,10 @@ package com.woniuxy.realm;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
-import com.woniuxy.domain.Users;
 
+import com.woniuxy.domain.Users;
+import com.woniuxy.dto.Result;
+import com.woniuxy.dto.StatusCode;
 import com.woniuxy.service.UsersService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -31,9 +33,9 @@ public class CustomRealm extends AuthorizingRealm {
     //认证
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String username = (String) authenticationToken.getPrincipal();
+        String phone = (String) authenticationToken.getPrincipal();
         QueryWrapper<Users> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", username);
+        wrapper.eq("phone", phone);
         Users udb = usersService.getOne(wrapper);
         if (!ObjectUtils.isEmpty(udb)) {
             return new SimpleAuthenticationInfo(udb, udb.getPassword(), ByteSource.Util.bytes(udb.getSalt()), this.getName());
