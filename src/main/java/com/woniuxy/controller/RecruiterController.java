@@ -60,10 +60,17 @@ public class RecruiterController {
     public Result getLoginUser(){
 //        String userId = id.substring(0,id.length()-1);
         System.out.println("招聘方获得详情方法");
-        String userId = redisTemplate.opsForValue().get("loginuser").toString();
-        System.out.println("getLoginUser查询用户详情时传来的用户id"+userId);
-        RecruitersVoUC recruiterInfoByUserId = recruiterMapper.getRecruiterInfoByUserId(Integer.parseInt(userId));
-        System.out.println(recruiterInfoByUserId);
+        String id = redisTemplate.opsForValue().get("loginuser").toString();
+        System.out.println("招聘方getLoginUser查询用户详情时传来的用户id"+id);
+        //根据招聘方用户id查询招聘方用户详情，包括公司详情
+        RecruitersVoUC recruiterInfoByUserId = recruiterMapper.getRecruiterInfoByUserId(Integer.parseInt(id));
+        System.out.println("根据招聘方用户id查询招聘方用户详情"+recruiterInfoByUserId);
+        //判断结果是否为空，空就调用不包括公司信息的查询方法
+        if (ObjectUtils.isEmpty(recruiterInfoByUserId)){
+            RecruitersVoUC recruiterInfoByUserIdNotCompany = recruiterMapper.getRecruiterInfoByUserIdNotCompany(Integer.parseInt(id));
+            //返回这个对象，后期公司信息加上了再返回上面那个对象
+            return new Result(true,StatusCode.OK,"成功获得用户信息",recruiterInfoByUserIdNotCompany);
+        }
         //一来先从缓存中查询看是否有这个id，有就直接从缓存中获得详情
 //        if (ObjectUtils.isEmpty(redisTemplate.opsForHash().get("RecruiterVo:id:" + userId, "id"))){
 //            //如果没有就从数据库中查询
@@ -85,7 +92,7 @@ public class RecruiterController {
 //        users.setPhone((String) redisTemplate.opsForHash().get("users:id:" + userId, "phone"));
 //        redisTemplate.opsForHash().get("users:id:" + userId, "id");
 //        return new Result(true,StatusCode.OK,"缓存中成功获得用户信息",users);
-        return new Result(true,StatusCode.OK,"缓存中成功获得用户信息",recruiterInfoByUserId);
+        return new Result(true,StatusCode.OK,"成功获得用户信息",recruiterInfoByUserId);
     }
 
     //修改用户详情

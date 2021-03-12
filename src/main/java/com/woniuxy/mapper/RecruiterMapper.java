@@ -40,8 +40,22 @@ public interface RecruiterMapper extends BaseMapper<Recruiter> {
             "ON r.userId=u.id " +
             "JOIN company AS c " +
             "ON c.recruiterId=r.id " +
-            "WHERE u.id=1;")
+            "WHERE u.id=#{id}")
     RecruitersVoUC getRecruiterInfoByUserId(Integer userId);
+
+    //查询用户详情不包括公司信息
+    @Select("SELECT  " +
+            " u.username, " +
+            " u.phone, " +
+            " u.uname, " +
+            " u.head, " +
+            " r.myJob, " +
+            " r.email " +
+            "FROM recruiter AS r " +
+            "JOIN users AS u " +
+            "ON r.userId=u.id " +
+            "WHERE u.id=#{id}")
+    RecruitersVoUC getRecruiterInfoByUserIdNotCompany(Integer userId);
 
     //保存招聘方修改的个人信息
     @Update("UPDATE " +
