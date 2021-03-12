@@ -35,8 +35,24 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("/user/login","anon");
-        map.put("/**","user");
+        map.put("/job/findCompanyJobByJobName","anon");
+        map.put("/users/showLockedCounts","anon");
+        map.put("/users/showWantedUnlockedCounts","anon");
+        map.put("/job/addJob","anon");
+        map.put("/job/getAllJob","anon");
+        map.put("/job/deleteJob","anon");
+        map.put("/interview/getNextMeeting","anon");
+        map.put("/interview/getBeforeMeeting","anon");
+        map.put("/company/getAllCompaniesAndJobs","anon");
+        map.put("/company/getAllCompanies","anon");
+        map.put("/company/deleteCompaniesByCompanyId","anon");
+        map.put("/users/showLockedCounts","anon");
+        map.put("/users/appealsUnlocked","anon");
+        map.put("/users/releaseLock","anon");
+        map.put("/swagger-ui.html","anon");
+//        map.put("/**","user");
+
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }

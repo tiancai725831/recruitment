@@ -50,5 +50,7 @@ public class Projectexperience implements Serializable {
     @TableField("projectRole")
     private String projectRole;
 
+    private Integer resumeId;
+
 
 }

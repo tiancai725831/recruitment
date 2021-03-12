@@ -44,8 +44,8 @@ public class Onlineresume implements Serializable {
 
     private String certificate;
 
-    @TableField("projectExperienceId")
-    private Integer projectExperienceId;
+    @TableField("projectExperience")
+    private String projectExperience;
 
     @TableField("educationalExperience")
     private String educationalExperience;
