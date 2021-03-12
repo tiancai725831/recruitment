@@ -61,7 +61,7 @@ public class CompanyController {
     })
     public Result getCompanyInfo(@RequestBody String recruiterId){
         String idg = recruiterId.substring(0, recruiterId.length() - 1);
-        System.out.println("查询公司详情信息获得的参数："+idg);
+//        System.out.println("查询公司详情信息获得的参数："+idg);
         //从数据库查询公司信息
         Company companyInfo = companyMapper.selectOne
                 (new QueryWrapper<Company>().
@@ -85,7 +85,7 @@ public class CompanyController {
             @ApiImplicitParam(name = "company",value = "公司详情信息",dataType = "Company",paramType = "path",example = "公司详情信息"),
     })
     public  Result updateCompanyInfo(@RequestBody Company company){
-        System.out.println("修改公司详情信息获得的参数："+company);
+//        System.out.println("修改公司详情信息获得的参数："+company);
         //先根据公司名查询该公司为空的话，就存入一个RecruiterId
         Company companyInfo = companyMapper.selectOne
                 (new QueryWrapper<Company>().

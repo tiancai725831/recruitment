@@ -76,8 +76,8 @@ public class UsersController {
             @ApiImplicitParam(name = "phone",value = "注册电话",dataType = "String",paramType = "path",example = "17777777777"),
     })
     public Result sendVerificationCode(String phone,HttpServletRequest request){
-        System.out.println("进入发送验证码方法");
-        System.out.println("获得的电话"+phone);
+//        System.out.println("进入发送验证码方法");
+//        System.out.println("获得的电话"+phone);
         String tel=phone;
         //表达式判断电话号码是否正确
         String judge="^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$";
@@ -90,7 +90,7 @@ public class UsersController {
             if(ObjectUtils.isEmpty(redisPhones)){
                 //redis中没有就根据前端传来的电话从数据库中查询所有电话
                 List<Users> phones = usersMapper.selectList(new QueryWrapper<Users>().eq("phone", null));
-                System.out.println(phones);
+//                System.out.println(phones);
                 //数据库结果不为空
                 if (!ObjectUtils.isEmpty(phones)){
                     //如果数据库中查出来的所有用户为空把电话放到redis中，说明还没有人注册
@@ -105,7 +105,7 @@ public class UsersController {
                 //循环遍历数据和输入的电话一一比对
                 for (String redisPhone : redisPhones) {
                     if(redisPhone.equals(tel)){
-                        System.out.println("走redis查询方法");
+//                        System.out.println("走redis查询方法");
                         return new Result(false,StatusCode.ERROR,"该用户已注册");
                     }
                 }
@@ -143,12 +143,12 @@ public class UsersController {
                 String code = root.elementText("code");
                 String msg = root.elementText("msg");
                 String smsid = root.elementText("smsid");
-                System.out.println(code);
-                System.out.println(msg);
-                System.out.println(smsid);
+//                System.out.println(code);
+//                System.out.println(msg);
+//                System.out.println(smsid);
                 if("2".equals(code)){
-                    System.out.println("短信提交成功");
-                    System.out.println("验证码为:"+mobile_code);
+//                    System.out.println("短信提交成功");
+//                    System.out.println("验证码为:"+mobile_code);
                     //把发送的验证码存到Session中
                     session = request.getSession();
                     session.setAttribute("code", mobile_code+"");
@@ -185,7 +185,7 @@ public class UsersController {
             @ApiImplicitParam(name = "recruitersVo",value = "注册方法vo类，包含用户名、电话、密码、验证码的信息",dataType = "RecruitersVo",paramType = "path",example = "用户名、电话、密码、验证码"),
     })
     public Result register(@RequestBody RecruitersVo recruitersVo){
-        System.out.println("注册时获得的账号密码和验证码"+ recruitersVo);
+//        System.out.println("注册时获得的账号密码和验证码"+ recruitersVo);
         //获取之前发送的验证码
         String code=(String) session.getAttribute("code");
         //表达式判断电话号码是否正确
@@ -247,7 +247,7 @@ public class UsersController {
             @ApiImplicitParam(name = "recruitersVo",value = "登录方法vo类，包含用户名、电话、密码、验证码的信息",dataType = "RecruitersVo",paramType = "path",example = "用户名、电话、密码、验证码"),
     })
     public Result login(@RequestBody RecruitersVo recruitersVo,HttpServletRequest request){
-        System.out.println("登录获得的前端参数"+ recruitersVo);
+//        System.out.println("登录获得的前端参数"+ recruitersVo);
         //通过电话从数据库中查询
         Users users = usersMapper.selectOne
                 (new QueryWrapper<Users>().eq("phone", recruitersVo.getPhone()));
@@ -268,7 +268,7 @@ public class UsersController {
                 //相同就表示账号密码都匹配，登录成功
                 //获得招聘方的id并传到前端
                 Integer recruiterId = recruiterMapper.getRecruiterIdByUserId(users.getId());
-                System.out.println("登录根据电话数据库中查询到的信息"+users);
+//                System.out.println("登录根据电话数据库中查询到的信息"+users);
                 //并把userId存到后端缓存中，供后端使用
                 redisTemplate.opsForValue().set("loginuser",users.getId());
                 RecruitersIdAndToken recruitersIdAndToken = new RecruitersIdAndToken();
@@ -291,12 +291,12 @@ public class UsersController {
     public Result getLoginUser(){
         String userId = (String)redisTemplate.opsForValue().get("loginuser");
 //        String userId = id.substring(0,id.length()-1);
-        System.out.println("getLoginUser查询用户详情时传来的用户id"+userId);
+//        System.out.println("getLoginUser查询用户详情时传来的用户id"+userId);
         //一来先从缓存中查询看是否有这个id，有就直接从缓存中获得详情
         if (ObjectUtils.isEmpty(redisTemplate.opsForHash().get("users:id:" + userId, "id"))){
             //如果没有就从数据库中查询
             Users users = usersMapper.selectById(Integer.parseInt(userId));
-            System.out.println("从数据库中查询到的user详情"+users);
+//            System.out.println("从数据库中查询到的user详情"+users);
             //把查询到的用户信息存到缓存中
             redisTemplate.opsForHash().put("users:id:"+userId,"id",users.getId().toString());
             redisTemplate.opsForHash().put("users:id:"+userId,"username",users.getUsername());
@@ -304,7 +304,7 @@ public class UsersController {
             return new Result(true,StatusCode.OK,"数据库中成功获得用户信息",users);
         }
         String id1 =(String) redisTemplate.opsForHash().get("users:id:" + userId, "id");
-        System.out.println("首页从缓存中获得的登录用户id："+id1);
+//        System.out.println("首页从缓存中获得的登录用户id："+id1);
 //        String s = id1.toString();
         //不为空就把数据存到一个users对象，传到前端
         Users users = new Users();

@@ -59,12 +59,12 @@ public class RecruiterController {
     })
     public Result getLoginUser(){
 //        String userId = id.substring(0,id.length()-1);
-        System.out.println("招聘方获得详情方法");
+//        System.out.println("招聘方获得详情方法");
         String id = redisTemplate.opsForValue().get("loginuser").toString();
-        System.out.println("招聘方getLoginUser查询用户详情时传来的用户id"+id);
+//        System.out.println("招聘方getLoginUser查询用户详情时传来的用户id"+id);
         //根据招聘方用户id查询招聘方用户详情，包括公司详情
         RecruitersVoUC recruiterInfoByUserId = recruiterMapper.getRecruiterInfoByUserId(Integer.parseInt(id));
-        System.out.println("根据招聘方用户id查询招聘方用户详情"+recruiterInfoByUserId);
+//        System.out.println("根据招聘方用户id查询招聘方用户详情"+recruiterInfoByUserId);
         //判断结果是否为空，空就调用不包括公司信息的查询方法
         if (ObjectUtils.isEmpty(recruiterInfoByUserId)){
             RecruitersVoUC recruiterInfoByUserIdNotCompany = recruiterMapper.getRecruiterInfoByUserIdNotCompany(Integer.parseInt(id));
@@ -110,7 +110,7 @@ public class RecruiterController {
     public Result saveUpdateInfoByUserId(@RequestBody RecruitersVoUC recruitersVo){
         String userId = redisTemplate.opsForValue().get("loginuser").toString();
         recruitersVo.setId(Integer.parseInt(userId));
-        System.out.println("修改用户详情获得的参数"+recruitersVo);
+//        System.out.println("修改用户详情获得的参数"+recruitersVo);
         Integer integer = recruiterMapper.saveUpdateInfoByUserId(recruitersVo);
         if (integer>0){
             return new Result(true,StatusCode.OK,"修改用户详情成功");
@@ -133,7 +133,7 @@ public class RecruiterController {
     public Result updatePassword(@RequestBody RecruitersVo recruitersVo){
         String userId = redisTemplate.opsForValue().get("loginuser").toString();
         recruitersVo.setId(Integer.parseInt(userId));
-        System.out.println("修改密码方法获得的参数密码："+recruitersVo.getPassword()+"+id:"+recruitersVo.getId());
+//        System.out.println("修改密码方法获得的参数密码："+recruitersVo.getPassword()+"+id:"+recruitersVo.getId());
         //现根据当前用户id获得当前用户的盐、密码等信息
         Users users = usersMapper.selectById(recruitersVo.getId());
         //创建加密工具
@@ -159,7 +159,7 @@ public class RecruiterController {
             @ApiImplicitParam(name = "file",value = "上传的头像文件",dataType = "MultipartFile",paramType = "path",example = "上传的头像图片"),
     })
     public void upLoadHead(MultipartFile file){
-        System.out.println("上传头像获得的参数head"+file);
+//        System.out.println("上传头像获得的参数head"+file);
         //获取上传文件存放在服务器中的路径,并把/替换为\
         String path="D:/java/shiyan/upload".replace("/",File.separator);
         //把路径放入IO流中

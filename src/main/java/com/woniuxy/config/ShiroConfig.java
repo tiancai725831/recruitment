@@ -4,6 +4,7 @@ package com.woniuxy.config;
 import com.woniuxy.jwt.MyJwtFilter;
 import com.woniuxy.realm.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -23,6 +24,17 @@ public class ShiroConfig {
         hashedCredentialsMatcher.setHashAlgorithmName("md5");
         hashedCredentialsMatcher.setHashIterations(1024);
         customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
+        //开启缓存
+        customRealm.setCachingEnabled(true);
+
+        //设置认证缓存
+        customRealm.setAuthenticationCachingEnabled(true);
+
+        //设置授权缓存
+        customRealm.setAuthorizationCachingEnabled(true);
+
+        //设置缓存管理器
+        customRealm.setCacheManager(new EhCacheManager());
         return customRealm;
     }
 
