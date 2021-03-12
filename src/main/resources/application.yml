@@ -1,3 +1,4 @@
+
 server:
   port: 8888
 
@@ -7,7 +8,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql:///woniudb?characterEncoding=UTF-8
     username: root
-    password: 123456
+    password:
 
 mybatis-plus:
   configuration:

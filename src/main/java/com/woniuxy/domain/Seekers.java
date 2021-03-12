@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhangshuai
- * @since 2021-03-08
+ * @since 2021-03-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -44,10 +44,12 @@ public class Seekers implements Serializable {
     private String jobTransition;
 
     @TableField("jonIntension")
-    private String jonIntension;
+    //求职意向
+    private String jobIntension;
 
     @TableField("userId")
     private Integer userId;
 
+    private String resume;
 
 }
