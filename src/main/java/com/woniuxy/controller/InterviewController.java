@@ -106,11 +106,6 @@ public class InterviewController {
 
         return new Result(false, StatusCode.ERROR,"面试邀请失败");
     }
-
-
-
-    @Resource
-    InterviewMapper interviewMapper;
     //查看当前时间之后的面试
     @GetMapping("getNextMeeting")
     @ApiOperation(value = "查询出当前时间之后的面试",notes = "<span style='color:red;'>查询出当前时间之后的面试的接口</span>")

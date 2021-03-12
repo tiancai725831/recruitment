@@ -6,7 +6,7 @@ import com.woniuxy.jwt.MyJwtFilter;
 import com.woniuxy.component.JwtFilter;
 import com.woniuxy.realm.CustomRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
+
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;

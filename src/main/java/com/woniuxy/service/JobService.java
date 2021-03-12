@@ -14,16 +14,8 @@ import java.util.List;
  * @since 2021-03-08
  */
 public interface JobService extends IService<Job> {
-
-    List<Job> getJobs(Integer id);
-
-    public boolean addByRid(Job job);
-
     Job getByRid(Integer id);
-
     public boolean deleteByJid(Integer jid);
     List<Job> getJobs(Integer id);
-
     public boolean addByRid(Job job);
-
 }

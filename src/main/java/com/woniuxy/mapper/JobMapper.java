@@ -29,15 +29,6 @@ public interface JobMapper extends BaseMapper<Job> {
     //根据输入的职位名称查询拥有该职位的公司名
     @Select("select j.jobName,c.companyName FROM job AS j JOIN company as c ON j.companyId = c.id where j.jobName = #{jobName}")
     List<JobCompany> findCompanyJobByJobName (String jobName);
-
-    @Select("select j.* from job j join recruiter r on j.recruiterId = #{id} ")
-    public List<Job> getJobs(Integer id);
-
-    @Insert("insert into job values(#{id},#{recruiterId},#{companyId},#{minSalary}," +
-            "#{maxSalary},#{welfare},#{workPlace},#{academicRequirements},#{experienceRequirement}," +
-            "#{recruitmentStatus},#{jobName},#{jobReleaseTime},#{updatedTime},#{jobTag},#{viewNumber})")
-    public Integer addByRid(@RequestParam Job job);
-
     @Select("select j.* from job j join recruiter r on j.recruiterId = #{id} ")
     Job getByRid(Integer id);
 

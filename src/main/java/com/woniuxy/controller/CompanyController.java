@@ -132,8 +132,6 @@ public class CompanyController {
     @Resource
     private RecruiterMapper recruiterMapper;
 
-    @Resource
-    private CompanyMapper companyMapper;
 
     //根据关联的招聘者id查询公司信息
     @PostMapping("getCompanyInfo")

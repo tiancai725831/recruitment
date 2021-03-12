@@ -14,51 +14,18 @@ import com.woniuxy.service.JobService;
 import com.woniuxy.service.RecruiterService;
 import com.woniuxy.service.SeekersService;
 import org.springframework.web.bind.annotation.*;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.woniuxy.Vo.JobCompany;
-import com.woniuxy.Vo.JobVo;
-import com.woniuxy.domain.Job;
-import com.woniuxy.dto.Result;
-import com.woniuxy.dto.StatusCode;
 import com.woniuxy.mapper.JobMapper;
 import io.swagger.annotations.*;
-import org.springframework.web.bind.annotation.*;
-
-import com.woniuxy.domain.Job;
-import com.woniuxy.dto.Result;
-import com.woniuxy.dto.StatusCode;
-import com.woniuxy.mapper.JobMapper;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.UUID;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.woniuxy.domain.Job;
 import com.woniuxy.domain.Recruiter;
-import com.woniuxy.dto.Result;
-import com.woniuxy.dto.StatusCode;
-import com.woniuxy.mapper.JobMapper;
-import com.woniuxy.service.JobService;
-import com.woniuxy.service.RecruiterService;
-import io.swagger.annotations.Api;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
-
 /**
  * <p>
  *  前端控制器
@@ -71,7 +38,7 @@ import javax.annotation.Resource;
 @Api(tags = "职位接口信息")//用于描述接口类的相关信息，作用于类上
 @RequestMapping("/job")
 @Slf4j
-@Api(tags = "职位操作")
+
 public class JobController {
     @Resource
     JobMapper jobMapper;
@@ -156,16 +123,18 @@ public class JobController {
             //dataType:参数类型
             //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
             @ApiImplicitParam(name = "jobId",value = "职位id",dataType = "Integer",paramType = "query",example = "1"),
-    @Resource
-    private JobMapper jobMapper;
+    })
+    public Result deleteJob(Integer jobId){
+        System.out.println(jobId);
+        int i = jobMapper.deleteById(jobId );
+        if(i>0){
+            return  new Result(true,StatusCode.OK,"删除职位成功");
+        }else{
+            return  new Result(false,StatusCode.ERROR,"删除职位失败");
+        }
 
 
-
-
-
-
-
-
+    }
     @GetMapping("/searchjobname")
     public Result searchJobNamegy(String sid){//搜索条件职位名称
 
@@ -174,11 +143,6 @@ public class JobController {
 
         return new Result(false,StatusCode.ERROR,"修改失败",recruiterId);
     }
-
-
-
-
-
 
     /*
     根据职位前端传回的职位job的id
@@ -194,7 +158,8 @@ public class JobController {
         if (i>0){
             return new Result(true, StatusCode.OK,"修改成功");
         }
-
+        return new Result(false,StatusCode.ERROR,"修改失败");
+    }
     @Resource
     private JobService jobService;
     @Resource
@@ -248,28 +213,7 @@ public class JobController {
         List<Job> list = jobService.list(wrapper);
         return new Result(true,StatusCode.OK,"查询薪资",list);
     }
-    })
-    public Result deleteJob(Integer jobId){
-      System.out.println(jobId);
-        int i = jobMapper.deleteById(jobId );
-        if(i>0){
-            return  new Result(true,StatusCode.OK,"删除职位成功");
-        }else{
-            return  new Result(false,StatusCode.ERROR,"删除职位失败");
-        }
 
-
-    }
-        return new Result(false,StatusCode.ERROR,"修改失败");
-    }
-
-
-
-
-    @Resource
-    private JobService jobService;
-    @Resource
-    private RecruiterService recruiterService;
 
     //查看发布岗位
     @GetMapping("getJobs")
