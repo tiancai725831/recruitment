@@ -39,12 +39,11 @@ public class ShiroConfig {
         Map<String, Filter> filters = shiroFilterFactoryBean.getFilters();
         filters.put("jwt",new MyJwtFilter());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("/users/login","anon");
-        //用户注册方法放行
-        map.put("/users/register","anon");
-        //发送验证码方法放行
-        map.put("/users/sendVerificationCode","anon");
-        map.put("/**","anon");
+        //users下的所有方法放行
+        map.put("/users/**","anon");
+        map.put("/recruiter/**","anon");
+        map.put("/company/**","anon");
+        map.put("/**","jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }

@@ -20,8 +20,7 @@ public class JwtUtil {
             builder.withClaim(k,v);
         });
         builder.withExpiresAt(new Date(System.currentTimeMillis()+EXPIRE_TIME));
-        String token = builder.sign(Algorithm.HMAC256(SIGN));
-        return token;
+        return builder.sign(Algorithm.HMAC256(SIGN));
     }
 
     //解析jwt

@@ -2,37 +2,39 @@ package com.woniuxy.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.woniuxy.domain.Recruiter;
 import com.woniuxy.domain.Users;
 import com.woniuxy.dto.Result;
 import com.woniuxy.dto.StatusCode;
 import com.woniuxy.jwt.JwtUtil;
+import com.woniuxy.mapper.RecruiterMapper;
 import com.woniuxy.mapper.UsersMapper;
 import com.woniuxy.util.CodeMessage;
 import com.woniuxy.util.SaltUtils;
-import com.woniuxy.vo.UsersVo;
+import com.woniuxy.vo.RecruitersIdAndToken;
+import com.woniuxy.vo.RecruitersVo;
+import io.swagger.annotations.Api;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.web.session.HttpServletSession;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.springframework.http.HttpRequest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -45,12 +47,19 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping("/users")
+@Api(tags = "用户的接口信息")
 public class UsersController {
 
     @Resource
     private UsersMapper usersMapper;
 
     private HttpSession session;
+
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    @Resource
+    private RecruiterMapper recruiterMapper;
 
     //发送验证码方法
     @GetMapping("sendVerificationCode")
@@ -64,11 +73,30 @@ public class UsersController {
         //判断是否时正确的电话号码，正确时才进行发送验证码操作
         if (r.matcher(tel).matches()){
             //判断该用户是否已注册
-            //现根据前端传来的电话从数据库中查询
-            Users users = usersMapper.selectOne(new QueryWrapper<Users>().eq("phone", tel));
-            System.out.println(users);
-            if (users!=null){
-                return new Result(false,StatusCode.ERROR,"该用户已注册");
+            //先从redis中查询有没有这个电话
+            Set<String> redisPhones = redisTemplate.opsForSet().members("phones");
+            if(ObjectUtils.isEmpty(redisPhones)){
+                //redis中没有就根据前端传来的电话从数据库中查询所有电话
+                List<Users> phones = usersMapper.selectList(new QueryWrapper<Users>().eq("phone", null));
+                System.out.println(phones);
+                //数据库结果不为空
+                if (!ObjectUtils.isEmpty(phones)){
+                    //如果数据库中查出来的所有用户为空把电话放到redis中，说明还没有人注册
+                    //如果从数据库中查询出来的部位空，就说明有数据，就把数据存到redis中
+                    for (Users users : phones) {
+                        //循环遍历所有用户对象，把电话一一存进redis中
+                        redisTemplate.opsForSet().add("phones",users.getPhone());
+                    }
+                }
+            }else{
+                //这里说明redis缓存中有数据
+                //循环遍历数据和输入的电话一一比对
+                for (String redisPhone : redisPhones) {
+                    if(redisPhone.equals(tel)){
+                        System.out.println("走redis查询方法");
+                        return new Result(false,StatusCode.ERROR,"该用户已注册");
+                    }
+                }
             }
             //定义静态变量 互亿无线发送短信的接口地址，把它存入一个静态常量类，可以给后续重复使用
             String Url= CodeMessage.URL;
@@ -134,34 +162,42 @@ public class UsersController {
 
     //注册方法
     @PostMapping("register")
-    public Result register(@RequestBody UsersVo usersVo){
-        System.out.println("注册时获得的账号密码和验证码"+usersVo);
+    public Result register(@RequestBody RecruitersVo recruitersVo){
+        System.out.println("注册时获得的账号密码和验证码"+ recruitersVo);
         //获取之前发送的验证码
         String code=(String) session.getAttribute("code");
         //表达式判断电话号码是否正确
         String judge="^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$";
         Pattern r = Pattern.compile(judge);
         //判断是否时正确的电话号码，正确时才进行发送验证码操作
-        if (r.matcher(usersVo.getPhone()).matches()){
-
+        if (r.matcher(recruitersVo.getPhone()).matches()){
             //判断是否时正确的密码格式，正确时才进行发送验证码操作
-            if(!usersVo.getPassword().equals("")&&usersVo.getPassword().length()>=8){
+            if(!recruitersVo.getPassword().equals("")&& recruitersVo.getPassword().length()>=8){
                 //判断是否时正确的验证码，正确时才进行发送验证码操作
-                if(usersVo.getCode().equals(code)){
+                if(recruitersVo.getCode().equals(code)){
                     String salt = SaltUtils.getSalt(8);
                     //创建md5加密工具
                     Md5Hash md5Hash = new Md5Hash
-                            (usersVo.getPassword(),salt , 1024);
+                            (recruitersVo.getPassword(),salt , 1024);
                     String password = md5Hash.toHex();
-                    //存进数据库,电话、密码、盐和创建时间
+                    //存进数据库,用户名、电话、密码、盐和创建时间
                     Users users = new Users();
-                    users.setUname(usersVo.getUsername());
-                    users.setPhone(usersVo.getPhone());
+                    users.setUsername(recruitersVo.getUsername());
+                    users.setPhone(recruitersVo.getPhone());
                     users.setPassword(password);
                     users.setSalt(salt);
                     users.setCreateTime(new Date(System.currentTimeMillis()));
+                    users.setRole(recruitersVo.getRole());
                     int insert = usersMapper.insert(users);
+                    //如果是招聘方，同时把userid存到seekes表中做关联
+                    if (users.getRole()==1){
+                        Recruiter recruiter = new Recruiter();
+                        recruiter.setUserId(users.getId());
+                        recruiterMapper.insert(recruiter);
+                    }
                     if (insert>0){
+                        //把电话放到redis中，会把注册的所有电话都放到redis中
+                        redisTemplate.opsForSet().add("phones", recruitersVo.getPhone());
                         return new Result(true,StatusCode.OK,"注册成功");
                     }
                     return new Result(true,StatusCode.OK,"注册失败");
@@ -178,17 +214,17 @@ public class UsersController {
 
     //登录方法
     @PostMapping("login")
-    public Result login(@RequestBody UsersVo usersVo){
-        System.out.println("登录获得的前端参数"+usersVo);
+    public Result login(@RequestBody RecruitersVo recruitersVo,HttpServletRequest request){
+        System.out.println("登录获得的前端参数"+ recruitersVo);
         //通过电话从数据库中查询
         Users users = usersMapper.selectOne
-                (new QueryWrapper<Users>().eq("phone", usersVo.getPhone()));
+                (new QueryWrapper<Users>().eq("phone", recruitersVo.getPhone()));
         if(ObjectUtils.isEmpty(users)){
             //为空就表示这个账号没注册
             return new Result(false,StatusCode.ERROR,"账号或密码错误");
         }else{
             //创建一个加密工具
-            Md5Hash md5Hash = new Md5Hash(usersVo.getPassword(), users.getSalt(), 1024);
+            Md5Hash md5Hash = new Md5Hash(recruitersVo.getPassword(), users.getSalt(), 1024);
             //把前端接受的密码直接加密，加密后再和数据库中的加密密码对比
             String s = md5Hash.toHex();
             if(s.equals(users.getPassword())){
@@ -198,12 +234,49 @@ public class UsersController {
                 //生成token
                 String token = JwtUtil.createToken(map);
                 //相同就表示账号密码都匹配，登录成功
-                return new Result(true,StatusCode.OK,"登录成功",token);
+                //获得招聘方的id并传到前端
+                Integer recruiterId = recruiterMapper.getRecruiterIdByUserId(users.getId());
+                System.out.println("登录根据电话数据库中查询到的信息"+users);
+                //并把userId存到后端缓存中，供后端使用
+                redisTemplate.opsForValue().set("loginuser",users.getId());
+                RecruitersIdAndToken recruitersIdAndToken = new RecruitersIdAndToken();
+                recruitersIdAndToken.setRecruitersId(recruiterId);
+                recruitersIdAndToken.setToken(token);
+                return new Result(true,StatusCode.OK,"登录成功",recruitersIdAndToken);
             }else{
                 //密码不相同
                 return new Result(false,StatusCode.ERROR,"账号或密码错误");
             }
         }
+    }
+
+    //首页一打开就根据用户id查询登录用户的详情
+    @PostMapping("getLoginUser")
+    public Result getLoginUser(){
+        String userId = (String)redisTemplate.opsForValue().get("loginuser");
+//        String userId = id.substring(0,id.length()-1);
+        System.out.println("getLoginUser查询用户详情时传来的用户id"+userId);
+        //一来先从缓存中查询看是否有这个id，有就直接从缓存中获得详情
+        if (ObjectUtils.isEmpty(redisTemplate.opsForHash().get("users:id:" + userId, "id"))){
+            //如果没有就从数据库中查询
+            Users users = usersMapper.selectById(Integer.parseInt(userId));
+            System.out.println("从数据库中查询到的user详情"+users);
+            //把查询到的用户信息存到缓存中
+            redisTemplate.opsForHash().put("users:id:"+userId,"id",users.getId().toString());
+            redisTemplate.opsForHash().put("users:id:"+userId,"username",users.getUsername());
+            redisTemplate.opsForHash().put("users:id:"+userId,"phone",users.getPhone());
+            return new Result(true,StatusCode.OK,"数据库中成功获得用户信息",users);
+        }
+        String id1 =(String) redisTemplate.opsForHash().get("users:id:" + userId, "id");
+        System.out.println("首页从缓存中获得的登录用户id："+id1);
+//        String s = id1.toString();
+        //不为空就把数据存到一个users对象，传到前端
+        Users users = new Users();
+        users.setId(Integer.valueOf(userId));
+        users.setUsername((String) redisTemplate.opsForHash().get("users:id:" + userId, "username"));
+        users.setPhone((String) redisTemplate.opsForHash().get("users:id:" + userId, "phone"));
+        redisTemplate.opsForHash().get("users:id:" + userId, "id");
+        return new Result(true,StatusCode.OK,"缓存中成功获得用户信息",users);
     }
 }
 

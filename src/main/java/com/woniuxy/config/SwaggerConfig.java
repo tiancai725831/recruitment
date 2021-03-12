@@ -25,13 +25,13 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(new ApiInfoBuilder()
                         //标题
-                        .title("user控制类")
+                        .title("三阶段项目接口文档")
                         //描述
-                        .description("user控制类的描述")
+                        .description("招聘方的注册、登录、详情、公司详情")
                         //版本
                         .version("1.0")
                         //联系人信息
-                        .contact(new Contact("付翔","http://www.baidu.com","93502690@qq.com"))
+                        .contact(new Contact("付翔","没得","93502690@qq.com"))
                         //项目主页
                         .license("项目主页")
                         .licenseUrl("http://www.baidu.com")
