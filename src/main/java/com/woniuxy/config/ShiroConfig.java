@@ -5,8 +5,9 @@ import com.woniuxy.jwt.MyJwtFilter;
 //import com.woniuxy.component.JWTRealm;
 import com.woniuxy.component.JwtFilter;
 import com.woniuxy.realm.CustomRealm;
+import com.woniuxy.component.JWTRealm;
+import com.woniuxy.component.JwtFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -21,14 +22,10 @@ import java.util.Map;
 public class ShiroConfig {
     @Bean
     public Realm realm(){
-        CustomRealm customRealm = new CustomRealm();
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        hashedCredentialsMatcher.setHashIterations(1024);
-        customRealm.setCredentialsMatcher(hashedCredentialsMatcher);
-        return customRealm;
-    }
+        JWTRealm jwtRealm = new JWTRealm();
 
+        return jwtRealm;
+    }
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
