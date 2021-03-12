@@ -2,9 +2,20 @@ server:
   port: 8888
 
 spring:
-  datasource:     #��������Դ
+
+
+
+  datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql:///third
+    url: jdbc:mysql:///third?characterEncoding=UTF-8
     username: root
     password:
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #配置mybatis-plus将日志打印到控制台
+  mapper-locations: classpath:mapper/**/*Mapper.xml # mapper映射文件 - classpath:mybatis/mapper/**/*.xml
+
+

@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhangshuai
- * @since 2021-03-06
+ * @since 2021-03-08
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -42,6 +42,7 @@ public class Onlineresume implements Serializable {
     @TableField("createdTime")
     private Date createdTime;
 
+    @TableField("certificate")
     private String certificate;
 
     @TableField("projectExperienceId")

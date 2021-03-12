@@ -44,9 +44,13 @@ public class Job implements Serializable {
     private String minSalary;
 
     @TableField("maxSalary")
-    @ApiModelProperty(value = "福利待遇")
+
+    @ApiModelProperty(value = "最大薪资")
+
     private String maxSalary;
 
+    @TableField("welfare")
+    @ApiModelProperty(value = "福利待遇")
     private String welfare;
 
     @TableField("workPlace")

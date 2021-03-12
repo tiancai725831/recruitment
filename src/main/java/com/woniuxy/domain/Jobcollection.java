@@ -21,33 +21,19 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Seekers对象", description="")
-public class Seekers implements Serializable {
+@ApiModel(value="Jobcollection对象", description="")
+public class Jobcollection implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String birthday;
+    @TableField("jobId")
+    private Integer jobId;
 
-    private String education;
-
-    private String identity;
-
-    @TableField("workHours")
-    private String workHours;
-
-    private String advantage;
-
-    @TableField("jobTransition")
-    private String jobTransition;
-
-    @TableField("jonIntension")
-    private String jonIntension;
-
-    @TableField("userId")
-    private Integer userId;
+    @TableField("seekId")
+    private Integer seekId;
 
 
 }

@@ -3,6 +3,8 @@ package com.woniuxy.service;
 import com.woniuxy.domain.Job;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -12,5 +14,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2021-03-06
  */
 public interface JobService extends IService<Job> {
+
+    List<Job> getJobs(Integer id);
+
+    public boolean addByRid(Job job);
 
 }
