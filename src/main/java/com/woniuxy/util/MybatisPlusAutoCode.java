@@ -59,7 +59,7 @@ public class MybatisPlusAutoCode {
         // https://baomidou.com/config/generator-config.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E9%85%8D%E7%BD%AE
         StrategyConfig strategy = new StrategyConfig();
         // 设置要生成的实体类对应映射的表名
-        strategy.setInclude("msg_info","session_list");
+        strategy.setInclude("charactertest");
 //   strategy.setTablePrefix("t_");                       //去除表名前缀
         //设置表名生成策略，下划线转驼峰
         strategy.setNaming(NamingStrategy.underline_to_camel);
