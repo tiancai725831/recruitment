@@ -51,5 +51,6 @@ public class Users implements Serializable {
     @TableField("isComplainted")
     private Integer isComplainted;
 
+    private Integer role;
 
 }

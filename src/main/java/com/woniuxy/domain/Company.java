@@ -55,5 +55,5 @@ public class Company implements Serializable {
     @TableField("recruiterId")
     private Integer recruiterId;
 
-
+    private String companyName;
 }

@@ -1,5 +1,4 @@
 
-
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -7,9 +6,17 @@ spring:
     url: jdbc:mysql:///third?characterEncoding=UTF-8&useSSL=false
     username: root
     password:
+  resources:
+    static-locations: file:D:\thirdworkspace\img\uploads
+  mvc:
+    static-path-pattern: /**
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 server:
   port: 8888
+#  tomcat:
+#    basedir: img/tomcat
+
+

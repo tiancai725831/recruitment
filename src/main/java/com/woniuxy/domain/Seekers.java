@@ -49,5 +49,6 @@ public class Seekers implements Serializable {
     @TableField("userId")
     private Integer userId;
 
+    private String resume;
 
 }

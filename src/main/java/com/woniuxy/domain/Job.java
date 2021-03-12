@@ -37,10 +37,10 @@ public class Job implements Serializable {
     private Integer companyId;
 
     @TableField("minSalary")
-    private String minSalary;
+    private Double minSalary;
 
     @TableField("maxSalary")
-    private String maxSalary;
+    private Double maxSalary;
 
     private String welfare;
 
