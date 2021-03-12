@@ -1,6 +1,8 @@
 package com.woniuxy.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.woniuxy.Vo.JobMeetingVO;
+import com.woniuxy.Vo.JobTopVO;
 import com.woniuxy.Vo.JobresumeVO;
 import com.woniuxy.domain.Recruiter;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -19,4 +21,5 @@ public interface RecruiterService extends IService<Recruiter> {
 
     List<JobresumeVO> getPage(QueryWrapper<JobresumeVO> wrapper);
 
+    List<JobTopVO> getJobPage(QueryWrapper<JobTopVO> wrapper);
 }

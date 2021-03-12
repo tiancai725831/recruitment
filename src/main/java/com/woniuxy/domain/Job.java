@@ -71,5 +71,5 @@ public class Job implements Serializable {
     @TableField("viewNumber")
     private Integer viewNumber;
 
-
+    private String top;
 }

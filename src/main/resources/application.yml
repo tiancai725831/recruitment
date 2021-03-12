@@ -12,3 +12,5 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #配置mybatis-plus将日志打印到控制台
+  mapper-locations: classpath:mapper/**/*Mapper.xml # mapper映射文件 - classpath:mybatis/mapper/**/*.xml
+

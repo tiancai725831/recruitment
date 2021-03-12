@@ -1,9 +1,15 @@
 package com.woniuxy.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.woniuxy.domain.Users;
+import com.woniuxy.dto.Result;
+import com.woniuxy.dto.StatusCode;
+import com.woniuxy.service.UsersService;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -17,5 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UsersController {
 
+    @Resource
+    private UsersService usersService;
+
+    @GetMapping("getUserByName")
+    public Result getUserByName(Users users){
+        QueryWrapper<Users> wrapper = new QueryWrapper<>();
+        wrapper.like("uname",users.getUname());
+        List<Users> list = usersService.list(wrapper);
+        return new Result(true,StatusCode.OK,"搜索找人",list);
+    }
 }
 

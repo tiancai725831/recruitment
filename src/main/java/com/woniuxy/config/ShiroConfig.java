@@ -38,6 +38,7 @@ public class ShiroConfig {
         map.put("/user/login","anon");
         map.put("/interview/**","anon");
         map.put("/job/**","anon");
+        map.put("/users/**","anon");
         map.put("/**","user");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;

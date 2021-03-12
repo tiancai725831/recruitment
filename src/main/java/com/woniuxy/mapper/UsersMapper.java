@@ -2,6 +2,10 @@ package com.woniuxy.mapper;
 
 import com.woniuxy.domain.Users;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +15,23 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zhangshuai
  * @since 2021-03-06
  */
+@Mapper
 public interface UsersMapper extends BaseMapper<Users> {
+    int deleteByPrimaryKey(Integer id);
 
+    int insert(Users users);
+
+    int insertSelective(Users users);
+
+    Users selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Users users);
+
+    int updateByPrimaryKey(Users users);
+
+    String selectByName(String uname);
+
+    List<Users> getCloudList(@Param("list") List<Integer> list);
+
+    Users selectUserByName(@Param("uname") String uname);
 }

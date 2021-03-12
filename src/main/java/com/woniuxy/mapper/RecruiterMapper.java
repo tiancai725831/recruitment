@@ -3,6 +3,8 @@ package com.woniuxy.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.woniuxy.Vo.JobMeetingVO;
+import com.woniuxy.Vo.JobTopVO;
 import com.woniuxy.Vo.JobresumeVO;
 import com.woniuxy.domain.Recruiter;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -30,4 +32,14 @@ public interface RecruiterMapper extends BaseMapper<Recruiter> {
             "ON s.userId=u.id\n" +
             "${ew.customSqlSegment}")
     Page<JobresumeVO> getPage(Page<JobresumeVO> jobresumeVoPage, @Param(Constants.WRAPPER) QueryWrapper<JobresumeVO> wrapper);
+
+    @Select("SELECT j.*,c.*\n" +
+            "FROM recruiter r\n" +
+            "JOIN job j\n" +
+            "ON j.recruiterId=r.id\n" +
+            "JOIN company c\n" +
+            "ON c.id=j.companyId\n" +
+            "${ew.customSqlSegment}\n" +
+            "ORDER BY j.updatedTime DESC\n")
+    Page<JobTopVO> getJobPage(Page<JobTopVO> jobMeetingVOPage, @Param(Constants.WRAPPER) QueryWrapper<JobTopVO> wrapper);
 }
