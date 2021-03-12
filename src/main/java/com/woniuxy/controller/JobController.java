@@ -233,13 +233,13 @@ public class JobController {
     }
 
     //发布岗位
-    @PostMapping("addJob")
-    public Result addJobs(@RequestBody Recruiter recruiter, @RequestBody Job job){
-        System.out.println("增加岗位");
-        job.setRecruiterId(recruiter.getId());
-        jobService.addByRid(job);
-        return new Result(true,StatusCode.OK,"新增成功");
-    }
+//    @PostMapping("addJob")
+//    public Result addJobs(@RequestBody Recruiter recruiter, @RequestBody Job job){
+//        System.out.println("增加岗位");
+//        job.setRecruiterId(recruiter.getId());
+//        jobService.addByRid(job);
+//        return new Result(true,StatusCode.OK,"新增成功");
+//    }
 
     @GetMapping("updateToJobs")
     public Result updateToJobs(Job job){

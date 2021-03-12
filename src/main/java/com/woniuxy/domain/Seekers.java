@@ -43,7 +43,7 @@ public class Seekers implements Serializable {
     @TableField("jobTransition")
     private String jobTransition;
 
-    @TableField("jonIntension")
+    @TableField("jobIntension")
     //求职意向
     private String jobIntension;
 

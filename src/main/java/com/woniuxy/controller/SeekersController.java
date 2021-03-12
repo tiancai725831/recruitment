@@ -11,6 +11,8 @@ import com.woniuxy.dto.Result;
 import com.woniuxy.dto.StatusCode;
 import com.woniuxy.service.*;
 
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.ObjectUtils;
 
 import org.springframework.web.bind.annotation.*;
@@ -97,7 +99,7 @@ public class SeekersController {
         seekerInfoVo.setHead(userDB.getHead());
         seekerInfoVo.setIdentity(seekerDB.getIdentity());
         seekerInfoVo.setJobTransition(seekerDB.getJobTransition());
-        seekerInfoVo.setJonIntension(seekerDB.getJonIntension());
+        seekerInfoVo.setJonIntension(seekerDB.getJobIntension());
         seekerInfoVo.setPhone(userDB.getPhone());
         seekerInfoVo.setUname(userDB.getUname());
         seekerInfoVo.setUsername(userDB.getUsername());
@@ -138,7 +140,7 @@ public class SeekersController {
         seekers.setEducation(seekerInfoVo1.getEducation());
         seekers.setIdentity(seekerInfoVo1.getIdentity());
         seekers.setJobTransition(seekerInfoVo1.getJobTransition());
-        seekers.setJonIntension(seekerInfoVo1.getJonIntension());
+        seekers.setJobIntension(seekerInfoVo1.getJonIntension());
         seekers.setWorkHours(seekerInfoVo1.getWorkHours());
 
 
@@ -192,7 +194,7 @@ public class SeekersController {
             seekers.setEducation(seekerInfoVo1.getEducation());
             seekers.setIdentity(seekerInfoVo1.getIdentity());
             seekers.setJobTransition(seekerInfoVo1.getJobTransition());
-            seekers.setJonIntension(seekerInfoVo1.getJonIntension());
+            seekers.setJobIntension(seekerInfoVo1.getJonIntension());
             seekers.setWorkHours(seekerInfoVo1.getWorkHours());
 
 
