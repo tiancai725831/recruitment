@@ -42,6 +42,7 @@ public class Onlineresume implements Serializable {
     @TableField("createdTime")
     private Date createdTime;
 
+    @TableField("certificate")
     private String certificate;
 
     @TableField("projectExperience")

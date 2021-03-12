@@ -6,11 +6,44 @@ import com.woniuxy.dto.Result;
 import com.woniuxy.service.RecruiterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.woniuxy.domain.Onlineresume;
+import com.woniuxy.domain.Recruiter;
+import com.woniuxy.dto.Result;
+import com.woniuxy.dto.StatusCode;
+import com.woniuxy.mapper.OnlineresumeMapper;
+import com.woniuxy.mapper.RecruiterMapper;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.woniuxy.domain.Recruiter;
+import com.woniuxy.dto.Result;
+import com.woniuxy.service.RecruiterService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.woniuxy.domain.Onlineresume;
+import com.woniuxy.domain.Recruiter;
+import com.woniuxy.dto.Result;
+import com.woniuxy.dto.StatusCode;
+import com.woniuxy.mapper.OnlineresumeMapper;
+import com.woniuxy.mapper.RecruiterMapper;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+
+import javax.annotation.Resource;
+import java.util.List;
+
+import javax.annotation.Resource;
+
 
 /**
  * <p>
@@ -25,7 +58,6 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/recruiter")
 public class RecruiterController {
-
 
 }
 

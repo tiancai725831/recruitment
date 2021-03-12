@@ -12,6 +12,12 @@ import com.woniuxy.mapper.JobMapper;
 import io.swagger.annotations.*;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.woniuxy.dto.Result;
+import com.woniuxy.dto.StatusCode;
+import com.woniuxy.mapper.CompanyMapper;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 /**
  * <p>
  *  前端控制器
- *  公司
  * </p>
  *
  * @author zhangshuai

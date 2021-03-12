@@ -11,6 +11,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -40,4 +45,17 @@ public interface JobMapper extends BaseMapper<Job> {
             "from job \n" +
             "where id=#{jid}")
     public Integer deleteByJid(Integer jid);
+
+    @Select("select j.* from job j join recruiter r on j.recruiterId = #{id} ")
+    public List<Job> getJobs(Integer id);
+
+    @Insert("insert into job values(#{id},#{recruiterId},#{companyId},#{minSalary}," +
+            "#{maxSalary},#{welfare},#{workPlace},#{academicRequirements},#{experienceRequirement}," +
+            "#{recruitmentStatus},#{jobName},#{jobReleaseTime},#{updatedTime},#{jobTag},#{viewNumber})")
+    public Integer addByRid(@RequestParam Job job);
+
+
+
+
+
 }

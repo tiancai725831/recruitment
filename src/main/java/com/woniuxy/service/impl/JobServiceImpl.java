@@ -48,4 +48,20 @@ public class JobServiceImpl extends ServiceImpl<JobMapper, Job> implements JobSe
     }
 
 
+    @Resource
+    private JobMapper jobMapper;
+
+    @Override
+    public List<Job> getJobs(Integer id) {
+        jobMapper.getJobs(id);
+        return null;
+    }
+
+    @Override
+    public boolean addByRid(Job job) {
+        jobMapper.addByRid(job);
+        return true;
+    }
+
+
 }
