@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="Jobresume对象", description="")
+@ApiModel(value="Jobresume对象", description="Jobresume对象")
 public class Jobresume implements Serializable {
 
     private static final long serialVersionUID = 1L;
