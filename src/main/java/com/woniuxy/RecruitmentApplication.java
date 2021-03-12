@@ -7,6 +7,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @MapperScan("com.woniuxy.mapper")
+@EnableSwagger2
 public class RecruitmentApplication {
 
     public static void main(String[] args) {

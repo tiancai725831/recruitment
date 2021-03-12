@@ -13,7 +13,8 @@ import com.woniuxy.util.CodeMessage;
 import com.woniuxy.util.SaltUtils;
 import com.woniuxy.vo.RecruitersIdAndToken;
 import com.woniuxy.vo.RecruitersVo;
-import io.swagger.annotations.Api;
+import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
@@ -47,6 +48,7 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping("/users")
+@Slf4j
 @Api(tags = "用户的接口信息")
 public class UsersController {
 
@@ -63,6 +65,16 @@ public class UsersController {
 
     //发送验证码方法
     @GetMapping("sendVerificationCode")
+    @ApiOperation(value = "发送验证码接口，会先判断号码是否已被注册")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "号码已被注册或格式不正确"),
+            @ApiResponse(code=20000,message = "号码可以使用，并成功发送验证码")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "phone",value = "注册电话",dataType = "String",paramType = "path",example = "17777777777"),
+    })
     public Result sendVerificationCode(String phone,HttpServletRequest request){
         System.out.println("进入发送验证码方法");
         System.out.println("获得的电话"+phone);
@@ -162,6 +174,16 @@ public class UsersController {
 
     //注册方法
     @PostMapping("register")
+    @ApiOperation(value = "注册接口，注册判断")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "电话号码或密码格式不正确"),
+            @ApiResponse(code=20000,message = "注册成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "recruitersVo",value = "注册方法vo类，包含用户名、电话、密码、验证码的信息",dataType = "RecruitersVo",paramType = "path",example = "用户名、电话、密码、验证码"),
+    })
     public Result register(@RequestBody RecruitersVo recruitersVo){
         System.out.println("注册时获得的账号密码和验证码"+ recruitersVo);
         //获取之前发送的验证码
@@ -200,7 +222,7 @@ public class UsersController {
                         redisTemplate.opsForSet().add("phones", recruitersVo.getPhone());
                         return new Result(true,StatusCode.OK,"注册成功");
                     }
-                    return new Result(true,StatusCode.OK,"注册失败");
+                    return new Result(false,StatusCode.ERROR,"注册失败");
                 }else{
                     return new Result(false,StatusCode.ERROR,"验证码错误");
                 }
@@ -214,6 +236,16 @@ public class UsersController {
 
     //登录方法
     @PostMapping("login")
+    @ApiOperation(value = "登录接口，登录判断")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "电话号码或密码不正确"),
+            @ApiResponse(code=20000,message = "登录成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "recruitersVo",value = "登录方法vo类，包含用户名、电话、密码、验证码的信息",dataType = "RecruitersVo",paramType = "path",example = "用户名、电话、密码、验证码"),
+    })
     public Result login(@RequestBody RecruitersVo recruitersVo,HttpServletRequest request){
         System.out.println("登录获得的前端参数"+ recruitersVo);
         //通过电话从数据库中查询
@@ -252,6 +284,10 @@ public class UsersController {
 
     //首页一打开就根据用户id查询登录用户的详情
     @PostMapping("getLoginUser")
+    @ApiOperation(value = "获取用户详情")
+    @ApiResponses({
+            @ApiResponse(code=20000,message = "访问信息成功")
+    })
     public Result getLoginUser(){
         String userId = (String)redisTemplate.opsForValue().get("loginuser");
 //        String userId = id.substring(0,id.length()-1);

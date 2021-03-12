@@ -8,6 +8,7 @@ import com.woniuxy.mapper.RecruiterMapper;
 import com.woniuxy.mapper.UsersMapper;
 import com.woniuxy.vo.RecruitersVo;
 import com.woniuxy.vo.RecruitersVoUC;
+import io.swagger.annotations.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
@@ -36,6 +37,7 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/recruiter")
+@Api(tags = "招聘方的接口信息")
 public class RecruiterController {
 
     @Resource
@@ -49,8 +51,12 @@ public class RecruiterController {
     @Resource
     private RecruiterMapper recruiterMapper;
 
-    //首页根据查询登录用户的详情
+    //首页根据用户id查询登录用户的详情
     @PostMapping("getLoginUser")
+    @ApiOperation(value = "查询登录招聘方详情接口")
+    @ApiResponses({
+            @ApiResponse(code=20000,message = "查询成功")
+    })
     public Result getLoginUser(){
 //        String userId = id.substring(0,id.length()-1);
         System.out.println("招聘方获得详情方法");
@@ -84,6 +90,16 @@ public class RecruiterController {
 
     //修改用户详情
     @PostMapping("saveUpdateInfo")
+    @ApiOperation(value = "修改招聘方用户详情")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "修改信息失败"),
+            @ApiResponse(code=20000,message = "修改信息成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "recruitersVo",value = "修改招聘方详情vo类，包含用户信息",dataType = "RecruitersVoUC",paramType = "path",example = "用户详情"),
+    })
     public Result saveUpdateInfoByUserId(@RequestBody RecruitersVoUC recruitersVo){
         String userId = redisTemplate.opsForValue().get("loginuser").toString();
         recruitersVo.setId(Integer.parseInt(userId));
@@ -97,6 +113,16 @@ public class RecruiterController {
 
     //修改密码
     @PostMapping("saveUpdatePassword")
+    @ApiOperation(value = "修改招聘方用户登录密码")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "修改密码失败"),
+            @ApiResponse(code=20000,message = "修改密码成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "recruitersVo",value = "用户输入的新密码和招聘方id",dataType = "RecruitersVo",paramType = "path",example = "密码、id"),
+    })
     public Result updatePassword(@RequestBody RecruitersVo recruitersVo){
         String userId = redisTemplate.opsForValue().get("loginuser").toString();
         recruitersVo.setId(Integer.parseInt(userId));
@@ -119,7 +145,13 @@ public class RecruiterController {
 
     //上传头像，头像单独修改
     @PostMapping("uploadhead")
-    public Result upLoadHead(MultipartFile file){
+    @ApiOperation(value = "用户上传头像并修改")
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "file",value = "上传的头像文件",dataType = "MultipartFile",paramType = "path",example = "上传的头像图片"),
+    })
+    public void upLoadHead(MultipartFile file){
         System.out.println("上传头像获得的参数head"+file);
         //获取上传文件存放在服务器中的路径,并把/替换为\
         String path="D:/java/shiyan/upload".replace("/",File.separator);
@@ -155,7 +187,6 @@ public class RecruiterController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 }
 

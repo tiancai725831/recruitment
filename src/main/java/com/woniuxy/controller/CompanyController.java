@@ -8,6 +8,7 @@ import com.woniuxy.dto.StatusCode;
 import com.woniuxy.mapper.CompanyMapper;
 import com.woniuxy.mapper.RecruiterMapper;
 import com.woniuxy.mapper.UsersMapper;
+import io.swagger.annotations.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpSession;
  */
 @RestController
 @RequestMapping("/company")
+@Api(tags = "公司的接口信息")
 public class CompanyController {
 
     @Resource
@@ -47,6 +49,16 @@ public class CompanyController {
 
     //根据关联的招聘者id查询公司信息
     @PostMapping("getCompanyInfo")
+    @ApiOperation(value = "根据关联的招聘者id查询公司信息")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "暂无该公司信息，请添加"),
+            @ApiResponse(code=20000,message = "查询公司详情信息成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "recruiterId",value = "当前登录的招聘者id",dataType = "String",paramType = "path",example = "1"),
+    })
     public Result getCompanyInfo(@RequestBody String recruiterId){
         String idg = recruiterId.substring(0, recruiterId.length() - 1);
         System.out.println("查询公司详情信息获得的参数："+idg);
@@ -62,6 +74,16 @@ public class CompanyController {
 
     //添加，更改公司信息
     @PostMapping("updateCompanyInfo")
+    @ApiOperation(value = "添加，更改公司信息")
+    @ApiResponses({
+            @ApiResponse(code = 20001,message = "修改信息失败"),
+            @ApiResponse(code=20000,message = "修改信息成功")
+    })
+    @ApiImplicitParams({
+            //dataType:参数类型
+            //paramType:参数由哪里获取     path->从路径中获取，query->?传参，body->ajax请求
+            @ApiImplicitParam(name = "company",value = "公司详情信息",dataType = "Company",paramType = "path",example = "公司详情信息"),
+    })
     public  Result updateCompanyInfo(@RequestBody Company company){
         System.out.println("修改公司详情信息获得的参数："+company);
         //先根据公司名查询该公司为空的话，就存入一个RecruiterId
